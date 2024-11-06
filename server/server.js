@@ -1,56 +1,39 @@
 const express = require('express');
 const xlsx = require('xlsx');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 4000;  // Use Heroku's port or default to 4000
+const PORT = 4000;
 
 app.use(cors());
 
-// Function to load and parse the Excel file asynchronously
-const loadData = async () => {
-    const filePath = path.join(__dirname, 'data.xlsx');
-    const fileBuffer = fs.readFileSync(filePath);
-    const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
+// Load and parse the Excel file
+const workbook = xlsx.readFile('data.xlsx'); // Ensure your file is correctly named and located
+const semesterData = [];
+const gpaData = [];
 
-    const semesterData = [];
-    const gpaData = [];
+// Loop through the first four sheets and store data for semester results
+for (let i = 0; i < Math.min(4, workbook.SheetNames.length); i++) {
+    const sheetName = workbook.SheetNames[i];
+    const sheet = workbook.Sheets[sheetName];
+    const sheetData = xlsx.utils.sheet_to_json(sheet);
+    
+    sheetData.forEach(record => {
+        record['Semester'] = sheetName; // Assign the sheet name to the Semester field
+    });
 
-    // Loop through the first four sheets and store data for semester results
-    for (let i = 0; i < Math.min(4, workbook.SheetNames.length); i++) {
-        const sheetName = workbook.SheetNames[i];
-        const sheet = workbook.Sheets[sheetName];
-        const sheetData = xlsx.utils.sheet_to_json(sheet);
+    semesterData.push(...sheetData);
+}
 
-        sheetData.forEach(record => {
-            record['Semester'] = sheetName; // Assign the sheet name to the Semester field
-        });
-
-        semesterData.push(...sheetData);
-    }
-
-    // Load the fifth sheet for GPA data, if it exists
-    if (workbook.SheetNames.length > 4) {
-        const gpaSheet = workbook.Sheets[workbook.SheetNames[4]];
-        gpaData.push(...xlsx.utils.sheet_to_json(gpaSheet));
-    }
-
-    return { semesterData, gpaData };
-};
+// Load the fifth sheet for GPA data, if it exists
+if (workbook.SheetNames.length > 4) {
+    const gpaSheet = workbook.Sheets[workbook.SheetNames[4]];
+    gpaData.push(...xlsx.utils.sheet_to_json(gpaSheet));
+}
 
 // API endpoint to get results by registration number from semester sheets
-app.get('/api/results/:year/:department/:number', async (req, res) => {
+app.get('/api/results/:year/:department/:number', (req, res) => {
     const { year, department, number } = req.params;
     const regNo = `${year}/${department}/${number}`; // Construct the full registration number
-
-    const { semesterData, gpaData } = await loadData(); // Load data from the Excel file
-
-    // Validate registration number format
-    const regNoRegex = /^\d{4}\/[A-Za-z]+\/\d{4}$/; // Example: "2020/CS/1234"
-    if (!regNoRegex.test(regNo)) {
-        return res.status(400).json({ message: 'Invalid registration number format.' });
-    }
 
     // Filter semester data by registration number
     const filteredResults = semesterData.filter((record) => record['Reg.No'] === regNo);
@@ -110,11 +93,6 @@ app.get('/api/results/:year/:department/:number', async (req, res) => {
     }
 });
 
-loadData().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-    });
-}).catch(err => {
-    console.error('Error loading data:', err);
-    process.exit(1); // Exit the process if data loading fails
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

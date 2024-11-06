@@ -1,145 +1,167 @@
+/* Main container styles */
 .app-container {
-  padding: 20px;
+  padding: 10px;
   font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
-  max-width: 800px;
-  margin: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-h1 {
-  text-align: center;
-  color: #333;
+.results-container {
+  margin-top: 20px;
+}
+
+/* Grid layout for semesters with limited width */
+.semester-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr)); /* 2 columns with limited width */
+  gap: 15px;
+  margin: 0 auto;
+  max-width: 400px; /* Constrains overall grid width */
+}
+
+.semester-item {
+  border: 1px solid #ccc;
+  padding: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 120px; /* Smaller height */
+  max-width: 180px; /* Constrain each item's width */
+}
+
+.results-title,
+.student-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.sheet-heading {
+  font-size: 16px;
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+.results-table th,
+.results-table td {
+  padding: 5px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 14px; /* Smaller font */
+}
+
+.results-table th {
+  background-color: #f4f4f4;
+}
+
+.ocgpa-section {
+  margin-top: 15px;
+}
+
+.overall-gpa {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.download-button-container {
+  margin-top: 20px;
+}
+
+.download-button {
+  padding: 8px 15px;
+  background-color: #2969f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.download-button:hover {
+  background-color: #45a049;
+}
+
+.no-print {
+  display: block;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
 }
 
 .search-form {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .search-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px;
-  width: 250px;
+  padding: 8px;
+  font-size: 14px;
+  margin-right: 8px;
+  width: 150px; /* Reduced width for smaller layout */
 }
 
 .search-button {
-  padding: 10px 15px;
+  padding: 8px 15px;
+  font-size: 14px;
+  background-color: #007BFF;
+  color: white;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
-  color: white;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .search-button:hover {
   background-color: #0056b3;
 }
 
-.results-container {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-}
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  /* Stack columns for smaller screens */
+  .semester-grid {
+    grid-template-columns: 1fr; /* 1 column for mobile */
+    grid-template-rows: auto;
+    max-width: 100%; /* Full width on mobile */
+  }
 
-.results-title {
-  margin-bottom: 5px;
-}
+  .semester-item {
+    padding: 8px;
+    min-height: 100px; /* Adjust for smaller screens */
+  }
 
-.student-name {
-  font-weight: normal;
-  color: #555;
-}
+  .results-title, .student-name {
+    font-size: 18px;
+  }
 
-.results-sheet {
-  margin-top: 10px;
-}
+  .sheet-heading {
+    font-size: 14px;
+  }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+  .overall-gpa {
+    font-size: 16px;
+  }
 
-th, td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
+  .download-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 
-th {
-  background-color: #f2f2f2;
-}
+  .search-input {
+    width: 100%;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
 
-.course-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.course-item {
-  margin-right: 5px;
-}
-
-.overall-gpa {
-  margin-top: 15px;
-  font-weight: bold;
-}
-
-.error-message {
-  color: red;
-  text-align: center;
-}
-
-.ocgpa-section {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-}
-
-.overall-gpa {
-  font-size: 1.5em;
-  font-weight: bold;
-}
-
-/* Center the download button */
-.download-button-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.download-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.download-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-}
-
-.download-button:active {
-  background-color: #004494;
-  transform: translateY(1px);
-}
-
-/* Hide elements with the .no-print class when printing */
-@media print {
-  .no-print {
-    display: none;
+  .search-button {
+    padding: 6px 12px;
+    font-size: 12px;
   }
 }

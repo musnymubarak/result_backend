@@ -55,41 +55,56 @@ const App = () => {
 
   const renderResults = () => {
     if (!results) return null;
-
+  
+    // Get an array of semester entries
+    const semesterEntries = Object.entries(results.semesterResults);
+  
+    // Group semesters into pairs (2 semesters per row)
+    const semesterGroups = [];
+    for (let i = 0; i < semesterEntries.length; i += 2) {
+      semesterGroups.push(semesterEntries.slice(i, i + 2));
+    }
+  
     return (
       <div id="results-container" className="results-container">
         <h2 className="results-title">Registration Number : {results.regNo}</h2>
         <h2 className="student-name">Name : {results.name}</h2>
-
-        {Object.entries(results.semesterResults).map(([semester, data]) => (
-          <div key={semester} className="semester-section">
-            <h3 className="sheet-heading">Results for {semester}</h3>
-            {data.courses.map((course, index) => (
-              <table key={index} className="results-table">
-                <thead>
-                  <tr>
-                    <th>Course</th>
-                    <th>Grade</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(course).map(([subject, grade]) => (
-                    <tr key={subject}>
-                      <td>{subject}</td>
-                      <td>{grade}</td>
-                    </tr>
+  
+        {/* Grid layout for semester results in 2x2 */}
+        <div className="semester-grid">
+          {semesterGroups.map((group, groupIndex) => (
+            <div key={groupIndex} className="semester-grid-row">
+              {group.map(([semester, data]) => (
+                <div key={semester} className="semester-item">
+                  <h3 className="sheet-heading">Results for {semester}</h3>
+                  {data.courses.map((course, index) => (
+                    <table key={index} className="results-table">
+                      <thead>
+                        <tr>
+                          <th>Course</th>
+                          <th>Grade</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Object.entries(course).map(([subject, grade]) => (
+                          <tr key={subject}>
+                            <td>{subject}</td>
+                            <td>{grade}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   ))}
-                </tbody>
-              </table>
-            ))}
-          </div>
-        ))}
-
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+  
         <div className="ocgpa-section">
           <h3 className="overall-gpa">Overall GPA: {results.overallGpa}</h3>
         </div>
-
-        {/* Button Centering */}
+  
         <div className="download-button-container">
           <button onClick={downloadPDF} className="download-button no-print">
             Download as PDF
