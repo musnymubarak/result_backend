@@ -11,8 +11,8 @@ const workbook = xlsx.readFile('data.xlsx'); // Ensure your file is correctly na
 const semesterData = [];
 const gpaData = [];
 
-// Loop through the first four sheets and store data for semester results
-for (let i = 0; i < Math.min(4, workbook.SheetNames.length); i++) {
+// Loop through the first six sheets and store data for semester results
+for (let i = 0; i < Math.min(6, workbook.SheetNames.length); i++) {
     const sheetName = workbook.SheetNames[i];
     const sheet = workbook.Sheets[sheetName];
     const sheetData = xlsx.utils.sheet_to_json(sheet);
@@ -24,9 +24,9 @@ for (let i = 0; i < Math.min(4, workbook.SheetNames.length); i++) {
     semesterData.push(...sheetData);
 }
 
-// Load the fifth sheet for GPA data, if it exists
-if (workbook.SheetNames.length > 4) {
-    const gpaSheet = workbook.Sheets[workbook.SheetNames[4]];
+// Load the GPA sheet (7th sheet) if it exists
+if (workbook.SheetNames.length > 6) {
+    const gpaSheet = workbook.Sheets[workbook.SheetNames[6]];
     gpaData.push(...xlsx.utils.sheet_to_json(gpaSheet));
 }
 
