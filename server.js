@@ -12,7 +12,7 @@ const semesterData = [];
 const gpaData = [];
 
 // Loop through the first four sheets and store data for semester results
-for (let i = 0; i < Math.min(5, workbook.SheetNames.length); i++) {
+for (let i = 0; i < Math.min(6, workbook.SheetNames.length); i++) {
     const sheetName = workbook.SheetNames[i];
     const sheet = workbook.Sheets[sheetName];
     const sheetData = xlsx.utils.sheet_to_json(sheet);
@@ -25,8 +25,8 @@ for (let i = 0; i < Math.min(5, workbook.SheetNames.length); i++) {
 }
 
 // Load the fifth sheet for GPA data, if it exists
-if (workbook.SheetNames.length > 5) {
-    const gpaSheet = workbook.Sheets[workbook.SheetNames[5]];
+if (workbook.SheetNames.length > 6) {
+    const gpaSheet = workbook.Sheets[workbook.SheetNames[6]];
     gpaData.push(...xlsx.utils.sheet_to_json(gpaSheet));
 }
 
@@ -96,3 +96,4 @@ app.get('/api/results/:year/:department/:number', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
